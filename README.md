@@ -49,7 +49,7 @@ docker-compose up -d
 
    Almost all is same as original, but ssh configuration is changed as following.
 
-   ![ssh-configuration](/Users/akiyuki/gits/docker-clion-dev/configs/ssh-configuration.png)
+   ![ssh-configuration](configs/ssh-configuration.png)
 
 # Debugging C++ in a Docker Container with CLion
 
