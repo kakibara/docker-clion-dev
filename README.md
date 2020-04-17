@@ -2,19 +2,14 @@
 
 ## About it
 
-This is a helper Dockerfile to make remote debugging environment. You can make your own remote development environment using your current docker image. This Dockerfile make only ssh configulation.
+This help you make remote debugging environment with docker. You can make your own remote development environment using your current docker image. This Dockerfile make only ssh configulation.
 
 requirements
 
 - docker image for develop
-- your public key for ssh authentification
+- ssh key under ~/.ssh (this copy automatically)
 
-## Difference from original
-
-This is a fork from https://github.com/shuhaoliu/docker-clion-dev. Features of this fork is following.
-
-- You can build your own enviromnent more quickly
-- You can use this Dockerfile not only for CLion but also othre IntelliJ IDE. (maybe you need anothre port forwarding in docker)
+## How to use
 
 ## usage
 
@@ -24,32 +19,17 @@ This is a fork from https://github.com/shuhaoliu/docker-clion-dev. Features of t
 FROM amd64/gcc:latest -> your/development:image
 ```
 
-2. Copy your public key in git root directory (you can add multiple public keys)
-
-```
-.
-├── Dockerfile
-├── README.md
-├── configs
-│   ├── cmake-config.png
-│   ├── deployment-auto-config.png
-│   └── toolchain-config.png
-├── docker-compose.yml
-├── YOUR_PULIC_KEY_1.pub
-└── YOUR_PULIC_KEY_2.pub
-```
-
-3. build and start container
+2. build and start container
 
 ```
 docker-compose up -d
 ```
 
-4. configure IDE
+3. configure IDE
 
-   Almost all is same as original, but ssh configuration is changed as following.
+Almost all is same as original, but ssh configuration is changed as following.
 
-   ![ssh-configuration](configs/ssh-configuration.png)
+![ssh-configuration](configs/ssh-configuration.png)
 
 # Debugging C++ in a Docker Container with CLion
 
