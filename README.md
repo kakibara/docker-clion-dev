@@ -19,13 +19,22 @@ requirements
 FROM amd64/gcc:latest -> your/development:image
 ```
 
-2. build and start container
+2. put your public keys on this directory
+
+ex)
+
+```bash
+cp ~/.ssh/id_esa.pub .
+scp mendelssohn@server:~/.ssh/id_rsa.pub .
+```
+
+3. build and start container
 
 ```
 docker-compose up -d
 ```
 
-3. configure IDE
+4. configure IDE
 
 Almost all is same as original, but ssh configuration is changed as following.
 

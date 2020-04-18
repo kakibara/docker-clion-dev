@@ -3,15 +3,19 @@ version: '3'
 services:
   gdbserver:
     build: 
-      context: ~/.ssh
-      dockerfile: $PWD/Dockerfile
+      context: . 
+      dockerfile: Dockerfile
+      args:
+        - USERNAME=${USER}
+        - SSH_PORT=9022
+        - DEBUGGER_PORT=9077
     security_opt: # options needed for gdb debugging
       - seccomp:unconfined
       - apparmor:unconfined
     container_name: debug
     ports:
-      - "7776:22"
-      - "7777:7777"
+      - "9022:9022"
+      - "9077:9077"
     volumes:
       - .:/code
 

@@ -1,21 +1,24 @@
-FROM amd64/gcc:latest
+FROM imachek/autocrop
 
 ########################################################
 # Essential packages for remote debugging and login in
 ########################################################
 
 ARG USERNAME=debugger
+ARG SSH_PORT=22
+ARG DEBUGGER_PORT=7777
 
 # gdb is optional
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    openssh-server rsync gdb gdbserver 
+    openssh-server rsync gdb gdbserver ccache
 
 # Taken from - https://docs.docker.com/engine/examples/running_ssh_service/#environment-variables
 # ref        - https://gist.github.com/parente/0227cfbbd8de1ce8ad05
 RUN mkdir /var/run/sshd
 RUN echo 'root:root' | chpasswd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config \
-&&  sed -i 's/#PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+&&  sed -i 's/#PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config \ 
+&&  sed -i "s/#Port 22/Port ${SSH_PORT}/" /etc/ssh/sshd_config
 
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
@@ -23,8 +26,8 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
-# 22 for ssh server. 7777 for gdb server.
-EXPOSE 22 7777
+# configure ports for ssh server and gdb server.
+EXPOSE ${SSH_PORT} ${DEBUGGER_PORT}
 
 RUN useradd -ms /bin/bash $USERNAME
 RUN echo $USERNAME':pwd' | chpasswd
